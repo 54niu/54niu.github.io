@@ -1,0 +1,1176 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="常用查找数据结构及算法（Python实现）来源: http://www.cnblogs.com/feixuelove1009/p/6148357.html目录 一、基本概念二、无序表查找三、有序表查找">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用查找数据结构及算法（Python实现）">
+<meta property="og:url" content="http://yoursite.com/2017/04/11/常用查找数据结构及算法（Python实现）/index.html">
+<meta property="og:site_name" content="鸣镝">
+<meta property="og:description" content="常用查找数据结构及算法（Python实现）来源: http://www.cnblogs.com/feixuelove1009/p/6148357.html目录 一、基本概念二、无序表查找三、有序表查找">
+<meta property="og:image" content="http://i.imgur.com/SzVPHdT.png">
+<meta property="og:image" content="http://i.imgur.com/VQjoLCM.png">
+<meta property="og:image" content="http://i.imgur.com/jfLc25t.png">
+<meta property="og:image" content="http://i.imgur.com/B0vjFl1.png">
+<meta property="og:image" content="http://i.imgur.com/QnfR0RV.png">
+<meta property="og:image" content="http://i.imgur.com/Js6CNR9.jpg">
+<meta property="og:image" content="http://i.imgur.com/H3tukJC.png">
+<meta property="og:updated_time" content="2017-04-15T08:42:40.750Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常用查找数据结构及算法（Python实现）">
+<meta name="twitter:description" content="常用查找数据结构及算法（Python实现）来源: http://www.cnblogs.com/feixuelove1009/p/6148357.html目录 一、基本概念二、无序表查找三、有序表查找">
+<meta name="twitter:image" content="http://i.imgur.com/SzVPHdT.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/11/常用查找数据结构及算法（Python实现）/"/>
+
+
+
+
+
+  <title> 常用查找数据结构及算法（Python实现） | 鸣镝 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?94632125d893b6d9e661c730f5891f7a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">鸣镝</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/11/常用查找数据结构及算法（Python实现）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="牛少鹏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鸣镝">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                常用查找数据结构及算法（Python实现）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-11T11:23:20+08:00">
+                2017-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/11/常用查找数据结构及算法（Python实现）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>常用查找数据结构及算法（Python实现）<br>来源: <a href="http://www.cnblogs.com/feixuelove1009/p/6148357.html" target="_blank" rel="external">http://www.cnblogs.com/feixuelove1009/p/6148357.html</a><br>目录</p>
+<p>一、基本概念<br>二、无序表查找<br>三、有序表查找<br><a id="more"></a><br>3.1 二分查找(Binary Search)<br>3.2 插值查找<br>3.3 斐波那契查找</p>
+<p>四、线性索引查找</p>
+<p>4.1 稠密索引<br>4.2 分块索引<br>4.3 倒排索引</p>
+<p>五、二叉排序树<br>六、 平衡二叉树<br>七、多路查找树（B树）</p>
+<p>7.1 2-3树<br>7.2 2-3-4树<br>7.3 B树<br>7.4 B+树</p>
+<p>八、散列表（哈希表）</p>
+<p>8.1 散列函数的构造方法<br>8.2 处理散列冲突<br>8.3 散列表查找实现<br>8.4 散列表查找性能分析</p>
+<p>参考书目《大话数据结构》</p>
+<h1 id="一、基本概念"><a href="#一、基本概念" class="headerlink" title="一、基本概念"></a>一、基本概念</h1><p>查找（Searching）就是根据给定的某个值，在查找表中确定一个其关键字等于给定值的数据元素（或记录）。</p>
+<p>查找表（Search Table）：由同一类型的数据元素（或记录）构成的集合<br>关键字（Key）：数据元素中某个数据项的值，又称为键值。<br>主键（Primary Key）：可唯一地标识某个数据元素或记录的关键字。</p>
+<p>查找表按照操作方式可分为：</p>
+<p>静态查找表（Static Search Table）：只做查找操作的查找表。它的主要操作是：<br>查询某个“特定的”数据元素是否在表中<br>检索某个“特定的”数据元素和各种属性<br>动态查找表（Dynamic Search Table）：在查找中同时进行插入或删除等操作：<br>查找时插入数据<br>查找时删除数据</p>
+<h1 id="二、无序表查找"><a href="#二、无序表查找" class="headerlink" title="二、无序表查找"></a>二、无序表查找</h1><p>也就是数据不排序的线性查找，遍历数据元素。<br>算法分析：最好情况是在第一个位置就找到了，此为O(1)；最坏情况在最后一个位置才找到，此为O(n)；所以平均查找次数为(n+1)/2。最终时间复杂度为O(n)</p>
+<pre>
+''' 最基础的遍历无序列表的查找算法
+    时间复杂度O(n)'''
+
+def sequential_search(lis, key):
+    length = len(lis)
+    for i in range(length):
+        if lis[i] == key:
+            return i
+        else:
+            return False
+
+
+if __name__ == '__main__':
+    LIST = [1, 5, 8, 123, 22, 54, 7, 99, 300, 222]
+    result = sequential_search(LIST, 123)
+    print(result)
+</pre>
+
+<h1 id="三、有序表查找"><a href="#三、有序表查找" class="headerlink" title="三、有序表查找"></a>三、有序表查找</h1><p>查找表中的数据必须按某个主键进行某种排序！</p>
+<h2 id="1-二分查找-Binary-Search"><a href="#1-二分查找-Binary-Search" class="headerlink" title="1. 二分查找(Binary Search)"></a>1. 二分查找(Binary Search)</h2><p>算法核心：在查找表中不断取中间元素与查找值进行比较，以二分之一的倍率进行表范围的缩小。</p>
+<p><pre><br>‘’’针对有序查找表的二分查找算法<br>   时间复杂度O(log(n))’’’</pre></p>
+<p>def binary_search(lis, key):<br>    low = 0<br>    high = len(lis) - 1<br>    time = 0<br>    while low &lt; high:<br>        time += 1<br>        mid = int((low + high) / 2)<br>        if key &lt; lis[mid]:<br>            high = mid - 1<br>        elif key &gt; lis[mid]:<br>            low = mid + 1<br>        else:<br>            print(“times: %s” % time)# 打印折半的次数<br>            return mid<br>    print(“times: %s” % time)<br>    return False<br>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    LIST = [1, 5, 7, 8, 22, 54, 99, 123, 200, 222, 444]<br>    result = binary_search(LIST, 99)<br>    print(result)<br></p>
+<h2 id="2-插值查找"><a href="#2-插值查找" class="headerlink" title="2. 插值查找"></a>2. 插值查找</h2><p>二分查找法虽然已经很不错了，但还有可以优化的地方。<br>有的时候，对半过滤还不够狠，要是每次都排除十分之九的数据岂不是更好？选择这个值就是关键问题，插值的意义就是：以更快的速度进行缩减。</p>
+<p>插值的核心就是使用公式：<br>value = (key - list[low])/(list[high] - list[low])</p>
+<p>用这个value来代替二分查找中的1/2。<br>上面的代码可以直接使用，只需要改一句。</p>
+<p><pre><br>‘’’<br> 插值查找算法<br> 时间复杂度O(log(n))’’’</pre></p>
+<p>def binary_search(lis, key):<br>    low = 0<br>    high = len(lis) - 1<br>    time = 0<br>    while low &lt; high:<br>        time += 1<br>        ‘’’ 计算mid值是插值算法的核心代码’’’<br>        mid = low + int((high - low) * (key - lis[low])/(lis[high] - lis[low]))<br>        print(“mid=%s, low=%s, high=%s” % (mid, low, high))<br>        if key &lt; lis[mid]:<br>            high = mid - 1<br>        elif key &gt; lis[mid]:<br>            low = mid + 1<br>        else:<br>            ‘’’ 打印查找的次数’’’<br>            print(“times: %s” % time)<br>            return mid<br>    print(“times: %s” % time)<br>    return False</p>
+<p>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    LIST = [1, 5, 7, 8, 22, 54, 99, 123, 200, 222, 444]<br>    result = binary_search(LIST, 444)<br>    print(result)<br><br>插值算法的总体时间复杂度仍然属于O(log(n))级别的。其优点是，对于表内数据量较大，且关键字分布比较均匀的查找表，使用插值算法的平均性能比二分查找要好得多。反之，对于分布极端不均匀的数据，则不适合使用插值算法。</p>
+<h2 id="3-斐波那契查找"><a href="#3-斐波那契查找" class="headerlink" title="3. 斐波那契查找"></a>3. 斐波那契查找</h2><p>由插值算法带来的启发，发明了斐波那契算法。其核心也是如何优化那个缩减速率，使得查找次数尽量降低。<br>使用这种算法，前提是已经有一个包含斐波那契数据的列表<br>F = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,…]</p>
+<p><pre><br>‘’’斐波那契查找算法<br>时间复杂度O(log(n))’’’</pre></p>
+<p>def fibonacci_search(lis, key):<br>    ‘’’ 需要一个现成的斐波那契列表。其最大元素的值必须超过查找表中元素个数的数值。’’’<br>    F = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,<br>         233, 377, 610, 987, 1597, 2584, 4181, 6765,<br>         10946, 17711, 28657, 46368]<br>    low = 0<br>    high = len(lis) - 1<br>     ‘’’为了使得查找表满足斐波那契特性，在表的最后添加几个同样的值<br>     这个值是原查找表的最后那个元素的值<br>     添加的个数由F[k]-1-high决定’’’<br>    k = 0<br>    while high &gt; F[k]-1:<br>        k += 1<br>    print(k)<br>    i = high<br>    while F[k]-1 &gt; i:<br>        lis.append(lis[high])<br>        i += 1<br>    print(lis)<br>    ‘’’ 算法主逻辑。time用于展示循环的次数。’’’<br>    time = 0<br>    while low &lt;= high:<br>        time += 1<br>        ‘’’ 为了防止F列表下标溢出，设置if和else’’’<br>        if k &lt; 2:<br>            mid = low<br>        else:<br>            mid = low + F[k-1]-1<br>        print(“low=%s, mid=%s, high=%s” % (low, mid, high))<br>        if key &lt; lis[mid]:<br>            high = mid - 1<br>            k -= 1<br>        elif key &gt; lis[mid]:<br>            low = mid + 1<br>            k -= 2<br>        else:<br>            if mid &lt;= high:<br>                ‘’’ 打印查找的次数’’’<br>                print(“times: %s” % time)<br>                return mid<br>            else:<br>                print(“times: %s” % time)<br>                return high<br>    print(“times: %s” % time)<br>    return False<br>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    LIST = [1, 5, 7, 8, 22, 54, 99, 123, 200, 222, 444]<br>    result = fibonacci_search(LIST, 444)<br>    print(result)<br><br>算法分析：斐波那契查找的整体时间复杂度也为O(log(n))。但就平均性能，要优于二分查找。但是在最坏情况下，比如这里如果key为1，则始终处于左侧半区查找，此时其效率要低于二分查找。</p>
+<p>总结：二分查找的mid运算是加法与除法，插值查找则是复杂的四则运算，而斐波那契查找只是最简单的加减运算。在海量数据的查找中，这种细微的差别可能会影响最终的查找效率。因此，三种有序表的查找方法本质上是分割点的选择不同，各有优劣，应根据实际情况进行选择。</p>
+<p>#四、线性索引查找#</p>
+<p>对于海量的无序数据，为了提高查找速度，一般会为其构造索引表。<br>索引就是把一个关键字与它相对应的记录进行关联的过程。<br>一个索引由若干个索引项构成，每个索引项至少包含关键字和其对应的记录在存储器中的位置等信息。<br>索引按照结构可以分为：线性索引、树形索引和多级索引。<br>线性索引：将索引项的集合通过线性结构来组织，也叫索引表。<br>线性索引可分为：稠密索引、分块索引和倒排索引</p>
+<h2 id="稠密索引"><a href="#稠密索引" class="headerlink" title="稠密索引"></a>稠密索引</h2><p>稠密索引指的是在线性索引中，为数据集合中的每个记录都建立一个索引项。<br>这其实就相当于给无序的集合，建立了一张有序的线性表。其索引项一定是按照关键码进行有序的排列。<br>这也相当于把查找过程中需要的排序工作给提前做了。<br><img src="http://i.imgur.com/SzVPHdT.png" alt=""></p>
+<h2 id="分块索引"><a href="#分块索引" class="headerlink" title="分块索引"></a>分块索引</h2><p>给大量的无序数据集合进行分块处理，使得块内无序，块与块之间有序。<br>这其实是有序查找和无序查找的一种中间状态或者说妥协状态。因为数据量过大，建立完整的稠密索引耗时耗力，占用资源过多；但如果不做任何排序或者索引，那么遍历的查找也无法接受，只能折中，做一定程度的排序或索引。<br>分块索引的效率比遍历查找的O(n)要高一些，但与二分查找的O(logn)还是要差不少。<br><img src="http://i.imgur.com/VQjoLCM.png" alt=""></p>
+<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>不是由记录来确定属性值，而是由属性值来确定记录的位置，这种被称为倒排索引。其中记录号表存储具有相同次关键字的所有记录的地址或引用（可以是指向记录的指针或该记录的主关键字）。</p>
+<p>倒排索引是最基础的搜索引擎索引技术。</p>
+<h1 id="五、二叉排序树"><a href="#五、二叉排序树" class="headerlink" title="五、二叉排序树"></a>五、二叉排序树</h1><p>二叉排序树又称为二叉查找树。它或者是一颗空树，或者是具有下列性质的二叉树：</p>
+<p>若它的左子树不为空，则左子树上所有节点的值均小于它的根结构的值；<br>若它的右子树不为空，则右子树上所有节点的值均大于它的根结构的值；<br>它的左、右子树也分别为二叉排序树。<br><img src="http://i.imgur.com/jfLc25t.png" alt=""></p>
+<p>构造一颗二叉排序树的目的，往往不是为了排序，而是为了提高查找和插入删除关键字的速度。</p>
+<p>二叉排序树的操作：</p>
+<p>查找：对比节点的值和关键字，相等则表明找到了；小了则往节点的左子树去找，大了则往右子树去找，这么递归下去，最后返回布尔值或找到的节点。<br>插入：从根节点开始逐个与关键字进行对比，小了去左边，大了去右边，碰到子树为空的情况就将新的节点链接。<br>删除：如果要删除的节点是叶子，直接删；如果只有左子树或只有右子树，则删除节点后，将子树链接到父节点即可；如果同时有左右子树，则可以将二叉排序树进行中序遍历，取将要被删除的节点的前驱或者后继节点替代这个被删除的节点的位置。</p>
+<pre>
+
+
+<p>class BSTNode:<br>    “””<br>    定义一个二叉树节点类。<br>    以讨论算法为主，忽略了一些诸如对数据类型进行判断的问题。<br>    “””<br>    def <strong>init</strong>(self, data, left=None, right=None):<br>        “””<br>        初始化<br>        :param data: 节点储存的数据<br>        :param left: 节点左子树<br>        :param right: 节点右子树<br>        “””<br>        self.data = data<br>        self.left = left<br>        self.right = right</p>
+<p>class BinarySortTree:<br>    “””<br>    基于BSTNode类的二叉排序树。维护一个根节点的指针。<br>    “””<br>    def <strong>init</strong>(self):<br>        self._root = None</p>
+<pre><code>def is_empty(self):
+    return self._root is None
+
+def search(self, key):
+    &quot;&quot;&quot;
+    关键码检索
+    :param key: 关键码
+    :return: 查询节点或None
+    &quot;&quot;&quot;
+    bt = self._root
+    while bt:
+        entry = bt.data
+        if key &lt; entry:
+            bt = bt.left
+        elif key &gt; entry:
+            bt = bt.right
+        else:
+            return entry
+    return None
+
+def insert(self, key):
+    &quot;&quot;&quot;
+    插入操作
+    :param key:关键码 
+    :return: 布尔值
+    &quot;&quot;&quot;
+    bt = self._root
+    if not bt:
+        self._root = BSTNode(key)
+        return
+    while True:
+        entry = bt.data
+        if key &lt; entry:
+            if bt.left is None:
+                bt.left = BSTNode(key)
+                return
+            bt = bt.left
+        elif key &gt; entry:
+            if bt.right is None:
+                bt.right = BSTNode(key)
+                return
+            bt = bt.right
+        else:
+            bt.data = key
+            return
+
+def delete(self, key):
+    &quot;&quot;&quot;
+    二叉排序树最复杂的方法
+    :param key: 关键码
+    :return: 布尔值
+    &quot;&quot;&quot;
+    p, q = None, self._root     # 维持p为q的父节点，用于后面的链接操作
+    if not q:
+        print(&quot;空树！&quot;)
+        return
+    while q and q.data != key:
+        p = q
+        if key &lt; q.data:
+            q = q.left
+        else:
+            q = q.right
+        if not q:               # 当树中没有关键码key时，结束退出。
+            return
+    # 上面已将找到了要删除的节点，用q引用。而p则是q的父节点或者None（q为根节点时）。
+    if not q.left:
+        if p is None:
+            self._root = q.right
+        elif q is p.left:
+            p.left = q.right
+        else:
+            p.right = q.right
+        return
+    # 查找节点q的左子树的最右节点，将q的右子树链接为该节点的右子树
+    # 该方法可能会增大树的深度，效率并不算高。可以设计其它的方法。
+    r = q.left
+    while r.right:
+        r = r.right
+    r.right = q.right
+    if p is None:
+        self._root = q.left
+    elif p.left is q:
+        p.left = q.left
+    else:
+        p.right = q.left
+
+def __iter__(self):
+    &quot;&quot;&quot;
+    实现二叉树的中序遍历算法,
+    展示我们创建的二叉排序树.
+    直接使用python内置的列表作为一个栈。
+    :return: data
+    &quot;&quot;&quot;
+    stack = []
+    node = self._root
+    while node or stack:
+        while node:
+            stack.append(node)
+            node = node.left
+        node = stack.pop()
+        yield node.data
+        node = node.right
+</code></pre><p>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    lis = [62, 58, 88, 48, 73, 99, 35, 51, 93, 29, 37, 49, 56, 36, 50]<br>    bs_tree = BinarySortTree()<br>    for i in range(len(lis)):<br>        bs_tree.insert(lis[i])</p>
+<pre><code># bs_tree.insert(100)
+bs_tree.delete(58)
+for i in bs_tree:
+    print(i, end=&quot; &quot;)
+# print(&quot;\n&quot;, bs_tree.search(4))
+</code></pre><p></p></pre><br>二叉排序树总结：<p></p>
+<p>二叉排序树以链式进行存储，保持了链接结构在插入和删除操作上的优点。<br>在极端情况下，查询次数为1，但最大操作次数不会超过树的深度。也就是说，二叉排序树的查找性能取决于二叉排序树的形状，也就引申出了后面的平衡二叉树。<br>给定一个元素集合，可以构造不同的二叉排序树，当它同时是一个完全二叉树的时候，查找的时间复杂度为O(log(n))，近似于二分查找。<br>当出现最极端的斜树时，其时间复杂度为O(n)，等同于顺序查找，效果最差。</p>
+<p><img src="http://i.imgur.com/B0vjFl1.png" alt=""></p>
+<h1 id="六、-平衡二叉树"><a href="#六、-平衡二叉树" class="headerlink" title="六、 平衡二叉树"></a>六、 平衡二叉树</h1><p>平衡二叉树（AVL树，发明者的姓名缩写）：一种高度平衡的排序二叉树，其每一个节点的左子树和右子树的高度差最多等于1。</p>
+<p>平衡二叉树首先必须是一棵二叉排序树！</p>
+<p>平衡因子（Balance Factor）：将二叉树上节点的左子树深度减去右子树深度的值。</p>
+<p>对于平衡二叉树所有包括分支节点和叶节点的平衡因子只可能是-1,0和1，只要有一个节点的因子不在这三个值之内，该二叉树就是不平衡的。<br><img src="http://i.imgur.com/QnfR0RV.png" alt=""></p>
+<p>最小不平衡子树：距离插入结点最近的，且平衡因子的绝对值大于1的节点为根的子树。</p>
+<p>平衡二叉树的构建思想：每当插入一个新结点时，先检查是否破坏了树的平衡性，若有，找出最小不平衡子树。在保持二叉排序树特性的前提下，调整最小不平衡子树中各结点之间的连接关系，进行相应的旋转，成为新的平衡子树。</p>
+<p>下面是由[1,2,3,4,5,6,7,10,9]构建平衡二叉树<br><img src="http://i.imgur.com/Js6CNR9.jpg" alt=""></p>
+<h1 id="七、多路查找树（B树）"><a href="#七、多路查找树（B树）" class="headerlink" title="七、多路查找树（B树）"></a>七、多路查找树（B树）</h1><p>多路查找树（muitl-way search tree）：其每一个节点的孩子可以多于两个，且每一个结点处可以存储多个元素。<br>对于多路查找树，每个节点可以存储多少个元素，以及它的孩子数的多少是关键，常用的有这4种形式：2-3树、2-3-4树、B树和B+树。</p>
+<h2 id="2-3树"><a href="#2-3树" class="headerlink" title="2-3树"></a>2-3树</h2><p>2-3树：每个结点都具有2个孩子，或者3个孩子，或者没有孩子。</p>
+<p>一个2结点包含一个元素和两个孩子（或者没有孩子，不能只有一个孩子）。与二叉排序树类似，其左子树包含的元素都小于该元素，右子树包含的元素都大于该元素。<br>一个3结点包含两个元素和三个孩子（或者没有孩子，不能只有一个或两个孩子）。</p>
+<p>2-3树中所有的叶子都必须在同一层次上。<br><img src="http://i.imgur.com/H3tukJC.png" alt=""></p>
+<h2 id="2-3-4树"><a href="#2-3-4树" class="headerlink" title="2-3-4树"></a>2-3-4树</h2><p>其实就是2-3树的扩展，包括了4结点的使用。一个4结点包含小中大三个元素和四个孩子（或没有孩子）。</p>
+<h2 id="B树"><a href="#B树" class="headerlink" title="B树"></a>B树</h2><p>B树是一种平衡的多路查找树。节点最大的孩子数目称为B树的阶（order）。2-3树是3阶B树，2-3-4是4阶B树。<br>B树的数据结构主要用在内存和外部存储器的数据交互中。</p>
+<h2 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h2><p>为了解决B树的所有元素遍历等基本问题，在原有的结构基础上，加入新的元素组织方式后，形成了B+树。</p>
+<p>B+树是应文件系统所需而出现的一种B树的变形树，严格意义上将，它已经不是最基本的树了。</p>
+<p>B+树中，出现在分支节点中的元素会被当做他们在该分支节点位置的中序后继者（叶子节点）中再次列出。另外，每一个叶子节点都会保存一个指向后一叶子节点的指针。<br>所有的叶子节点包含全部的关键字的信息，及相关指针，叶子节点本身依关键字的大小自小到大顺序链接</p>
+<p>B+树的结构特别适合带有范围的查找。比如查找年龄在20~30岁之间的人。</p>
+<h1 id="八、散列表（哈希表）"><a href="#八、散列表（哈希表）" class="headerlink" title="八、散列表（哈希表）"></a>八、散列表（哈希表）</h1><p>散列表：所有的元素之间没有任何关系。元素的存储位置，是利用元素的关键字通过某个函数直接计算出来的。这个一一对应的关系函数称为散列函数或Hash函数。<br>采用散列技术将记录存储在一块连续的存储空间中，称为散列表或哈希表（Hash Table）。关键字对应的存储位置，称为散列地址。</p>
+<p>散列表是一种面向查找的存储结构。它最适合求解的问题是查找与给定值相等的记录。但是对于某个关键字能对应很多记录的情况就不适用，比如查找所有的“男”性。也不适合范围查找，比如查找年龄20~30之间的人。排序、最大、最小等也不合适。</p>
+<p>因此，散列表通常用于关键字不重复的数据结构。比如python的字典数据类型。</p>
+<p>设计出一个简单、均匀、存储利用率高的散列函数是散列技术中最关键的问题。<br>但是，一般散列函数都面临着冲突的问题。<br>冲突：两个不同的关键字，通过散列函数计算后结果却相同的现象。collision。</p>
+<p>8## .1 散列函数的构造方法 ##</p>
+<p>好的散列函数：计算简单、散列地址分布均匀</p>
+<p>直接定址法<br>例如取关键字的某个线性函数为散列函数：<br>f(key) = a*key + b (a,b为常数）<br>数字分析法<br>抽取关键字里的数字，根据数字的特点进行地址分配<br>平方取中法<br>将关键字的数字求平方，再截取部分<br>折叠法<br>将关键字的数字分割后分别计算，再合并计算，一种玩弄数字的手段。<br>除留余数法<br>最为常见的方法之一。<br>对于表长为m的数据集合，散列公式为：<br>f(key) = key mod p (p&lt;=m)<br>mod：取模（求余数）<br>该方法最关键的是p的选择，而且数据量较大的时候，冲突是必然的。一般会选择接近m的质数。<br>随机数法<br>选择一个随机数，取关键字的随机函数值为它的散列地址。<br>f(key) = random(key)<br>总结，实际情况下根据不同的数据特性采用不同的散列方法，考虑下面一些主要问题：</p>
+<p>计算散列地址所需的时间<br>关键字的长度<br>散列表的大小<br>关键字的分布情况<br>记录查找的频率</p>
+<h2 id="8-2-处理散列冲突"><a href="#8-2-处理散列冲突" class="headerlink" title="8.2 处理散列冲突"></a>8.2 处理散列冲突</h2><p>开放定址法<br>就是一旦发生冲突，就去寻找下一个空的散列地址，只要散列表足够大，空的散列地址总能找到，并将记录存入。</p>
+<p>公式是：</p>
+<p>这种简单的冲突解决办法被称为线性探测，无非就是自家的坑被占了，就逐个拜访后面的坑，有空的就进，也不管这个坑是不是后面有人预定了的。<br>线性探测带来的最大问题就是冲突的堆积，你把别人预定的坑占了，别人也就要像你一样去找坑。</p>
+<p>改进的办法有二次方探测法和随机数探测法。</p>
+<p>再散列函数法<br>发生冲突时就换一个散列函数计算，总会有一个可以把冲突解决掉，它能够使得关键字不产生聚集，但相应地增加了计算的时间。</p>
+<p>链接地址法<br>碰到冲突时，不更换地址，而是将所有关键字为同义词的记录存储在一个链表里，在散列表中只存储同义词子表的头指针，如下图：<br>这样的好处是，不怕冲突多；缺点是降低了散列结构的随机存储性能。本质是用单链表结构辅助散列结构的不足。</p>
+<p>公共溢出区法<br>其实就是为所有的冲突，额外开辟一块存储空间。如果相对基本表而言，冲突的数据很少的时候，使用这种方法比较合适。<br>8.3 散列表查找实现</p>
+<p>下面是一段简单的实现代码：</p>
+<pre>
+
+
+<p>class HashTable:<br>    def <strong>init</strong>(self, size):<br>        self.elem = [None for i in range(size)]  # 使用list数据结构作为哈希表元素保存方法<br>        self.count = size  # 最大表长<br>    def hash(self, key):<br>        return key % self.count  # 散列函数采用除留余数法<br>    def insert_hash(self, key):<br>        “””插入关键字到哈希表内”””<br>        address = self.hash(key)  # 求散列地址<br>        while self.elem[address]:  # 当前位置已经有数据了，发生冲突。<br>            address = (address+1) % self.count  # 线性探测下一地址是否可用<br>        self.elem[address] = key  # 没有冲突则直接保存。<br>    def search_hash(self, key):<br>        “””查找关键字，返回布尔值”””<br>        star = address = self.hash(key)<br>        while self.elem[address] != key:<br>            address = (address + 1) % self.count<br>            if not self.elem[address] or address == star:  # 说明没找到或者循环到了开始的位置<br>                return False<br>        return True<br>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    list_a = [12, 67, 56, 16, 25, 37, 22, 29, 15, 47, 48, 34]<br>    hash_table = HashTable(12)<br>    for i in list_a:<br>        hash_table.insert_hash(i)<br>    for i in hash_table.elem:<br>        if i:<br>            print((i, hash_table.elem.index(i)), end=” “)<br>    print(“\n”)<br>    print(hash_table.search_hash(15))<br>    print(hash_table.search_hash(33))</p>
+<p></p></pre><p></p>
+<h2 id="8-4-散列表查找性能分析"><a href="#8-4-散列表查找性能分析" class="headerlink" title="8.4 散列表查找性能分析"></a>8.4 散列表查找性能分析</h2><p>如果没发生冲突，则其查找时间复杂度为O(1)，属于最极端的好了。<br>但是，现实中冲突可不可避免的，下面三个方面对查找性能影响较大：</p>
+<p>散列函数是否均匀<br>处理冲突的办法<br>散列表的装填因子（表内数据装满的程度）</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay-reward-image.jpg" alt="牛少鹏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/14/AWS-ec2配置ShadowSocks/" rel="next" title="AWS ec2配置ShadowSocks">
+                <i class="fa fa-chevron-left"></i> AWS ec2配置ShadowSocks
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/10/python3操作文件/" rel="prev" title="python3操作文件">
+                python3操作文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="牛少鹏" />
+          <p class="site-author-name" itemprop="name">牛少鹏</p>
+           
+              <p class="site-description motion-element" itemprop="description">跑啊跑，只是为了追上那个被寄予厚望的自己</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/54niu/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1939891387/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/you-qi-bing-86" target="_blank" title="zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://example.com/" title="百度" target="_blank">百度</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、基本概念"><span class="nav-number">1.</span> <span class="nav-text">一、基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、无序表查找"><span class="nav-number">2.</span> <span class="nav-text">二、无序表查找</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、有序表查找"><span class="nav-number">3.</span> <span class="nav-text">三、有序表查找</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-二分查找-Binary-Search"><span class="nav-number">3.1.</span> <span class="nav-text">1. 二分查找(Binary Search)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-插值查找"><span class="nav-number">3.2.</span> <span class="nav-text">2. 插值查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-斐波那契查找"><span class="nav-number">3.3.</span> <span class="nav-text">3. 斐波那契查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#稠密索引"><span class="nav-number">3.4.</span> <span class="nav-text">稠密索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分块索引"><span class="nav-number">3.5.</span> <span class="nav-text">分块索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#倒排索引"><span class="nav-number">3.6.</span> <span class="nav-text">倒排索引</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、二叉排序树"><span class="nav-number">4.</span> <span class="nav-text">五、二叉排序树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、-平衡二叉树"><span class="nav-number">5.</span> <span class="nav-text">六、 平衡二叉树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七、多路查找树（B树）"><span class="nav-number">6.</span> <span class="nav-text">七、多路查找树（B树）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3树"><span class="nav-number">6.1.</span> <span class="nav-text">2-3树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-4树"><span class="nav-number">6.2.</span> <span class="nav-text">2-3-4树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B树"><span class="nav-number">6.3.</span> <span class="nav-text">B树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B-树"><span class="nav-number">6.4.</span> <span class="nav-text">B+树</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八、散列表（哈希表）"><span class="nav-number">7.</span> <span class="nav-text">八、散列表（哈希表）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-处理散列冲突"><span class="nav-number">7.1.</span> <span class="nav-text">8.2 处理散列冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-4-散列表查找性能分析"><span class="nav-number">7.2.</span> <span class="nav-text">8.4 散列表查找性能分析</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">牛少鹏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1512d6b1286b4d16af0596fc3258e79a",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

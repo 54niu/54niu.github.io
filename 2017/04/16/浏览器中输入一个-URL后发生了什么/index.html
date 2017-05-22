@@ -1,0 +1,1096 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="HTTP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="本文剪辑自: http://igoro.com/archive/what-really-happens-when-you-navigate-to-a-url/作为一名软件开发人员，您肯定会看到Web应用程序如何工作以及涉及哪些技术的高级画面：浏览器，HTTP，HTML，Web服务器，请求处理程序等。 在本文中，我们将深入了解访问URL时发生的事件顺序。">
+<meta name="keywords" content="HTTP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器中输入一个 URL后发生了什么">
+<meta property="og:url" content="http://yoursite.com/2017/04/16/浏览器中输入一个-URL后发生了什么/index.html">
+<meta property="og:site_name" content="鸣镝">
+<meta property="og:description" content="本文剪辑自: http://igoro.com/archive/what-really-happens-when-you-navigate-to-a-url/作为一名软件开发人员，您肯定会看到Web应用程序如何工作以及涉及哪些技术的高级画面：浏览器，HTTP，HTML，Web服务器，请求处理程序等。 在本文中，我们将深入了解访问URL时发生的事件顺序。">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image4.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image13.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/500pxAn_example_of_theoretical_DNS_recursion_svg.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image22.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image8.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image23.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image9.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image10.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image6.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image11.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image12.png">
+<meta property="og:image" content="http://i.imgur.com/h6L7GDe.png">
+<meta property="og:updated_time" content="2017-04-16T02:24:37.206Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浏览器中输入一个 URL后发生了什么">
+<meta name="twitter:description" content="本文剪辑自: http://igoro.com/archive/what-really-happens-when-you-navigate-to-a-url/作为一名软件开发人员，您肯定会看到Web应用程序如何工作以及涉及哪些技术的高级画面：浏览器，HTTP，HTML，Web服务器，请求处理程序等。 在本文中，我们将深入了解访问URL时发生的事件顺序。">
+<meta name="twitter:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image4.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/16/浏览器中输入一个-URL后发生了什么/"/>
+
+
+
+
+
+  <title> 浏览器中输入一个 URL后发生了什么 | 鸣镝 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?94632125d893b6d9e661c730f5891f7a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">鸣镝</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/16/浏览器中输入一个-URL后发生了什么/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="牛少鹏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鸣镝">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                浏览器中输入一个 URL后发生了什么
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-16T09:40:32+08:00">
+                2017-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/HTTP/" itemprop="url" rel="index">
+                    <span itemprop="name">HTTP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/16/浏览器中输入一个-URL后发生了什么/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文剪辑自: <a href="http://igoro.com/archive/what-really-happens-when-you-navigate-to-a-url/" target="_blank" rel="external">http://igoro.com/archive/what-really-happens-when-you-navigate-to-a-url/</a><br>作为一名软件开发人员，您肯定会看到Web应用程序如何工作以及涉及哪些技术的高级画面：浏览器，HTTP，HTML，Web服务器，请求处理程序等。</p>
+<p>在本文中，我们将深入了解访问URL时发生的事件顺序。<br><a id="more"></a></p>
+<p>您在浏览器中输入一个URL</p>
+<p>这一切都从这里开始：</p>
+<p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image4.png" alt=""></p>
+<h1 id="2-浏览器查询域名的IP地址"><a href="#2-浏览器查询域名的IP地址" class="headerlink" title="2.浏览器查询域名的IP地址"></a>2.浏览器查询域名的IP地址</h1><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image13.png" alt=""></p>
+<p>导航的第一步是找出访问域的IP地址。DNS查找进行如下：</p>
+<ul>
+<li>浏览器缓存 – 浏览器会缓存DNS记录一段时间。 有趣的是，操作系统没有告诉浏览器储存DNS记录的时间，这样不同浏览器会储存个自固定的一个时间（2分钟到30分钟不等）。</li>
+</ul>
+<ul>
+<li>系统缓存 – 如果在浏览器缓存里没有找到需要的记录，浏览器会做一个系统调用（windows里是gethostbyname）。这样便可获得系统缓存中的记录。</li>
+</ul>
+<ul>
+<li>路由器缓存 – 接着，前面的查询请求发向路由器，它一般会有自己的DNS缓存。</li>
+</ul>
+<ul>
+<li>ISP DNS 缓存 – 接下来要check的就是ISP缓存DNS的服务器。在这一般都能找到相应的缓存记录。</li>
+</ul>
+<ul>
+<li>递归搜索 – 你的ISP的DNS服务器从跟域名服务器开始进行递归搜索，从.com顶级域名服务器到Facebook的域名服务器。一般DNS服务器的缓存中会有.com域名服务器中的域名，所以到顶级服务器的匹配过程不是那么必要了。</li>
+</ul>
+<p>以下是递归DNS搜索的示意图：</p>
+<p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/500pxAn_example_of_theoretical_DNS_recursion_svg.png" alt=""></p>
+<p>关于DNS的一个令人担忧的是，像wikipedia.org或facebook.com这样的整个域似乎映射到一个IP地址。幸运的是，有办法减轻瓶颈：</p>
+<ul>
+<li>循环DNS是DNS查找返回多个IP地址而不是仅一个的解决方案。例如，facebook.com实际上映射到四个IP地址。</li>
+</ul>
+<ul>
+<li>负载均衡器是用于监听特定IP地址并将请求转发到其他服务器的硬件。主要站点通常将使用昂贵的高性能负载平衡器。</li>
+</ul>
+<ul>
+<li>地理DNS通过将域名映射到不同的IP地址来提高可扩展性，具体取决于客户端的地理位置。这非常适合托管静态内容，以便不同的服务器不必更新共享状态。</li>
+</ul>
+<ul>
+<li>Anycast是一种路由技术，其中单个IP地址映射到多个物理服务器。不幸的是，anycast不适合TCP，在这种情况下很少使用。</li>
+</ul>
+<p>大多数DNS服务器本身都使用anycast来实现DNS查找的高可用性和低延迟。</p>
+<h1 id="3-浏览器向Web服务器发送HTTP请求"><a href="#3-浏览器向Web服务器发送HTTP请求" class="headerlink" title="3.浏览器向Web服务器发送HTTP请求"></a>3.浏览器向Web服务器发送HTTP请求</h1><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image22.png" alt=""></p>
+<p>您可以非常确定Facebook的主页将不会从浏览器缓存中提供，因为动态页面将非常快速或即时（到期日期设置为过期）到期。</p>
+<p>因此，浏览器会将此请求发送到Facebook服务器：</p>
+<p>GET <a href="http://facebook.com/" target="_blank" rel="external">http://facebook.com/</a> HTTP/1.1<br> Accept: application/x-ms-application, image/jpeg, application/xaml+xml, […]<br> User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; […]<br> Accept-Encoding: gzip, deflate<br> Connection: Keep-Alive<br> Host: facebook.com<br> Cookie: datr=1265876274-[…]; locale=en_US; lsd=WW[…]; c_user=2101[…]</p>
+<p>GET请求命名要提取的URL ： “<a href="http://facebook.com/”。浏览器识别自己（User-Agent头），并说明它将接受哪些类型的响应（Accept和Accept-Encoding标头）。该连接头要求服务器以保持TCP连接开放的进一步请求。" target="_blank" rel="external">http://facebook.com/”。浏览器识别自己（User-Agent头），并说明它将接受哪些类型的响应（Accept和Accept-Encoding标头）。该连接头要求服务器以保持TCP连接开放的进一步请求。</a></p>
+<p>该请求还包含浏览器对此域的Cookie。您可能已经知道，Cookie是跟踪不同页面请求之间的网站状态的键值对。因此，Cookie存储登录用户的名称，由服务器分配给用户的密码，用户的某些设置等。Cookie将存储在客户端上的文本文件中，并发送到服务器与每个请求。</p>
+<p>有各种工具可让您查看原始的HTTP请求和相应的响应。我最喜欢的查看原始HTTP流量的工具是提示，但还有许多其他工具（例如，FireBug）。这些工具在优化站点时非常有帮助。</p>
+<p>除了GET请求之外，您可能熟悉的其他类型的请求是POST请求，通常用于提交表单。GET请求通过URL发送其参数（例如：http：//robozzle.com/puzzle.aspx ？id = 85）。POST请求将其参数发送到请求正文中，位于头部下方。</p>
+<p>网址“<a href="http://facebook.com/”中的尾部斜杠很重要。在这种情况下，浏览器可以安全地添加斜杠。对于http://example.com/folderOrFile表单的网址，浏览器无法自动添加斜杠，因为folderOrFile是否是文件夹或文件不清楚。在这种情况下，浏览器将不用斜线访问该URL，并且服务器将以重定向进行响应，导致不必要的往返。" target="_blank" rel="external">http://facebook.com/”中的尾部斜杠很重要。在这种情况下，浏览器可以安全地添加斜杠。对于http://example.com/folderOrFile表单的网址，浏览器无法自动添加斜杠，因为folderOrFile是否是文件夹或文件不清楚。在这种情况下，浏览器将不用斜线访问该URL，并且服务器将以重定向进行响应，导致不必要的往返。</a></p>
+<h1 id="4-Facebook服务器以永久重定向方式进行响应"><a href="#4-Facebook服务器以永久重定向方式进行响应" class="headerlink" title="4.Facebook服务器以永久重定向方式进行响应"></a>4.Facebook服务器以永久重定向方式进行响应</h1><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image8.png" alt=""></p>
+<p>这是Facebook服务器发送回浏览器请求的响应：</p>
+<p>HTTP/1.1 301 Moved Permanently<br> Cache-Control: private, no-store, no-cache, must-revalidate, post-check=0,<br> pre-check=0<br> Expires: Sat, 01 Jan 2000 00:00:00 GMT<br> Location: <a href="http://www.facebook.com/" target="_blank" rel="external">http://www.facebook.com/</a><br> P3P: CP=”DSP LAW”<br> Pragma: no-cache<br> Set-Cookie: made_write_conn=deleted; expires=Thu, 12-Feb-2009 05:09:50 GMT;<br> path=/; domain=.facebook.com; httponly<br> Content-Type: text/html; charset=utf-8<br> X-Cnection: close<br> Date: Fri, 12 Feb 2010 05:09:51 GMT<br> Content-Length: 0</p>
+<p>服务器回复了301移动永久响应，告诉浏览器转到“<a href="http://www.facebook.com/”而不是“http://facebook.com/”。" target="_blank" rel="external">http://www.facebook.com/”而不是“http://facebook.com/”。</a></p>
+<p>有一些有趣的原因为什么服务器坚持重定向，而不是立即响应用户想要查看的网页。</p>
+<p>一个原因与搜索引擎排名有关。请参阅如果同一页面有两个URL，例如<a href="http://www.igoro.com/和http://igoro.com/，搜索引擎可能会认为它们是两个不同的网站，每个网站的入站链路较少，因此排名较低。搜索引擎了解永久重定向（301），并将来自两个来源的传入链接组合成单个排名。" target="_blank" rel="external">http://www.igoro.com/和http://igoro.com/，搜索引擎可能会认为它们是两个不同的网站，每个网站的入站链路较少，因此排名较低。搜索引擎了解永久重定向（301），并将来自两个来源的传入链接组合成单个排名。</a></p>
+<p>此外，同一内容的多个网址不是缓存友好的。当一段内容有多个名称时，它可能会在缓存中多次出现。</p>
+<h1 id="5-浏览器遵循重定向"><a href="#5-浏览器遵循重定向" class="headerlink" title="5.浏览器遵循重定向"></a>5.浏览器遵循重定向</h1><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image23.png" alt=""></p>
+<p>浏览器现在知道“<a href="http://www.facebook.com/”是正确的URL，因此它会发出另一个GET请求：" target="_blank" rel="external">http://www.facebook.com/”是正确的URL，因此它会发出另一个GET请求：</a></p>
+<p>GET <a href="http://www.facebook.com/" target="_blank" rel="external">http://www.facebook.com/</a> HTTP/1.1<br> Accept: application/x-ms-application, image/jpeg, application/xaml+xml, […]<br> Accept-Language: en-US<br> User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; […]<br> Accept-Encoding: gzip, deflate<br> Connection: Keep-Alive<br> Cookie: lsd=XW[…]; c_user=21[…]; x-referer=[…]<br> Host: www.facebook.com</p>
+<p>头信息以之前请求中的意义相同。</p>
+<h1 id="6-服务器’处理’请求"><a href="#6-服务器’处理’请求" class="headerlink" title="6.服务器’处理’请求"></a>6.服务器’处理’请求</h1><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image9.png" alt=""></p>
+<p>服务器将收到GET请求，处理它并发送回应。</p>
+<p>这似乎是一个简单的任务，但事实上，这里发生了很多有趣的事情 - 即使在像我的博客这样的简单网站上，更不用说像Facebook这样大规模扩展的网站了。</p>
+<ul>
+<li><strong>Web服务器软件</strong><br>Web服务器软件（例如IIS或Apache）收到HTTP请求，并决定执行哪个请求处理程序来处理此请求。请求处理程序是一个程序（在ASP.NET，PHP，Ruby，…中），它读取请求并生成响应的HTML。<br>在最简单的情况下，请求处理程序可以存储在结构反映URL结构的文件层次结构中，例如<a href="http://example.com/folder1/page1.aspx" target="_blank" rel="external">http://example.com/folder1/page1.aspx</a> URL将映射到文件/ httpdocs / folder1 / page1 .aspx。也可以配置Web服务器软件，以便将URL手动映射到请求处理程序，因此page1.aspx的公共URL可以是<a href="http://example.com/folder1/page1。" target="_blank" rel="external">http://example.com/folder1/page1。</a></li>
+</ul>
+<ul>
+<li><strong>请求处理程序</strong><br>请求处理程序读取请求，其参数和Cookie。它将读取并可能更新存储在服务器上的一些数据。然后，请求处理程序将生成一个HTML响应。<br>每个动态网站面临的一个有趣的难题是如何存储数据。较小的站点通常会有一个SQL数据库来存储数据，但存储大量数据和/或有许多访问者的站点必须找到一种在多台计算机上分割数据库的方法。解决方案包括分片（基于主键分割多个数据库的表），复制以及使用弱化一致性语义的简化数据库。</li>
+</ul>
+<p>保持数据更新便宜的一种技术是将一些工作推迟到批处理作业。例如，Facebook必须及时更新新闻源，但支持“您可能认识的人”功能的数据可能只需要每晚更新（我的猜测，我实际上并不知道如何实现此功能）。批量作业更新导致一些不太重要的数据的统一，但可以使数据更新更快更简单。</p>
+<h1 id="7-服务器发回一个HTML响应"><a href="#7-服务器发回一个HTML响应" class="headerlink" title="7.服务器发回一个HTML响应"></a>7.服务器发回一个HTML响应</h1><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image10.png" alt=""></p>
+<p>以下是服务器生成并发回的响应：</p>
+<p>HTTP/1.1 200 OK<br> Cache-Control: private, no-store, no-cache, must-revalidate, post-check=0,<br> pre-check=0<br> Expires: Sat, 01 Jan 2000 00:00:00 GMT<br> P3P: CP=”DSP LAW”<br> Pragma: no-cache<br> Content-Encoding: gzip<br> Content-Type: text/html; charset=utf-8<br> X-Cnection: close<br> Transfer-Encoding: chunked<br> Date: Fri, 12 Feb 2010 09:05:55 GMT</p>
+<p> 2b3Tn@[…]</p>
+<p>整个响应是36 kB，其中大部分在我修剪结束的字节blob中。</p>
+<p>的内容编码头告诉该响应体用gzip算法压缩的浏览器。解压缩Blob后，您会看到您期望的HTML：</p>
+<p>&lt;!DOCTYPE html PUBLIC “-//W3C//DTD XHTML 1.0 Strict//EN”<br> “<a href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;" target="_blank" rel="external">http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;</a><br> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" id="facebook" class=" no_js"><br> <head><br> <meta http-equiv="Content-type" content="text/html; charset=utf-8"><br> <meta http-equiv="Content-language" content="en"></head></html></p>
+<p>除了压缩，标题指定是否以及如何缓存页面，设置的任何Cookie（此响应中无），隐私信息等。</p>
+<p>注意将Content-Type设置为text / html的标题。标题指示浏览器将响应内容呈现为HTML，而不是将其作为文件下载。浏览器将使用标题来决定如何解释响应，但也会考虑其他因素，例如URL的扩展。</p>
+<h1 id="8-浏览器开始渲染HTML"><a href="#8-浏览器开始渲染HTML" class="headerlink" title="8.浏览器开始渲染HTML"></a>8.浏览器开始渲染HTML</h1><p>即使在浏览器收到整个HTML文档之前，它也开始渲染网站：</p>
+<p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image6.png" alt=""> </p>
+<h1 id="9-浏览器发送嵌入HTML的对象的请求"><a href="#9-浏览器发送嵌入HTML的对象的请求" class="headerlink" title="9.浏览器发送嵌入HTML的对象的请求"></a>9.浏览器发送嵌入HTML的对象的请求</h1><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image11.png" alt=""></p>
+<p>当浏览器呈现HTML时，它会注意到需要提取其他URL的标签。浏览器将发送GET请求以检索这些文件。</p>
+<p>以下是我访问facebook.com的几个URL：</p>
+<ul>
+<li>图片<br><a href="http://static.ak.fbcdn.net/rsrc.php/z12E0/hash/8q2anwu7.gif" target="_blank" rel="external">http://static.ak.fbcdn.net/rsrc.php/z12E0/hash/8q2anwu7.gif</a><br><a href="http://static.ak.fbcdn.net/rsrc.php/zBS5C/hash/7hwy7at6.gif" target="_blank" rel="external">http://static.ak.fbcdn.net/rsrc.php/zBS5C/hash/7hwy7at6.gif</a><br>…</li>
+</ul>
+<ul>
+<li>CSS样式表<br><a href="http://static.ak.fbcdn.net/rsrc.php/z448Z/hash/2plh8s4n.css" target="_blank" rel="external">http://static.ak.fbcdn.net/rsrc.php/z448Z/hash/2plh8s4n.css</a><br><a href="http://static.ak.fbcdn.net/rsrc.php/zANE1/hash/cvtutcee.css" target="_blank" rel="external">http://static.ak.fbcdn.net/rsrc.php/zANE1/hash/cvtutcee.css</a><br>…</li>
+</ul>
+<ul>
+<li>JavaScript文件<br><a href="http://static.ak.fbcdn.net/rsrc.php/zEMOA/hash/c8yzb6ub.js" target="_blank" rel="external">http://static.ak.fbcdn.net/rsrc.php/zEMOA/hash/c8yzb6ub.js</a><br><a href="http://static.ak.fbcdn.net/rsrc.php/z6R9L/hash/cq2lgbs8.js" target="_blank" rel="external">http://static.ak.fbcdn.net/rsrc.php/z6R9L/hash/cq2lgbs8.js</a><br>…</li>
+</ul>
+<p>这些URL中的每一个将通过与HTML页面通过的过程类似的过程。因此，浏览器将在DNS中查找域名，向URL发送请求，重定向等。</p>
+<p>但是，静态文件（与动态页面不同）允许浏览器缓存它们。某些文件可能会从缓存中提供，而不必联系服务器。浏览器知道缓存特定文件需要多长时间，因为返回文件的响应包含一个Expires头。此外，每个响应还可以包含一个类似于版本号的ETag标头 - 如果浏览器看到已经具有的文件版本的ETag，则可以立即停止传输。</p>
+<p>你能猜出这个URL中的“fbcdn.net”是什么意思？值得一提的是，这意味着“Facebook内容传送网络”。Facebook使用内容传送网络（CDN）分发静态内容 - 图像，样式表和JavaScript文件。因此，这些文件将被复制到全球许多机器。</p>
+<p>静态内容通常代表站点的大部分带宽，并且可以轻松地通过CDN进行复制。通常，网站将使用第三方CDN提供商，而不是自己运行CND。例如，Facebook的静态文件由最大的CDN提供商Akamai主办。</p>
+<p>作为演示，当您尝试ping static.ak.fbcdn.net时，您将收到akamai.net服务器的响应。此外，有趣的是，如果您ping了URL几次，可能会收到来自不同服务器的响应，这表明后台发生的负载均衡。</p>
+<h1 id="10-浏览器发送进一步的异步（AJAX）请求"><a href="#10-浏览器发送进一步的异步（AJAX）请求" class="headerlink" title="10.浏览器发送进一步的异步（AJAX）请求"></a>10.浏览器发送进一步的异步（AJAX）请求</h1><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image12.png" alt=""></p>
+<p>在Web 2.0的精神下，即使在页面呈现后，客户端也会继续与服务器通信。</p>
+<p>例如，Facebook聊天将继续更新您登录的朋友的名单，因为他们来了。要更新您登录的朋友的列表，浏览器中执行的JavaScript必须向服务器发送异步请求。异步请求是一种编程式构造的GET或POST请求，转到特殊URL。在Facebook示例中，客户端向<a href="http://www.facebook.com/ajax/chat/buddy_list.php发送POST请求，以获取在线的朋友的列表。" target="_blank" rel="external">http://www.facebook.com/ajax/chat/buddy_list.php发送POST请求，以获取在线的朋友的列表。</a></p>
+<p>这种模式有时被称为“AJAX”，它代表“异步JavaScript和XML”，尽管没有特别的理由为什么服务器必须将响应格式化为XML。例如，Facebook返回JavaScript代码片段以响应异步请求。</p>
+<p>除此之外，提示工具可让您查看浏览器发送的异步请求。事实上，你不仅可以被动地观察请求，还可以修改并重新发送。事实上，这是一个容易“欺骗”AJAX请求的事实，给开发人员带来了记分牌的网络游戏。（显然，请不要以这种方式作弊。）</p>
+<p>Facebook聊天提供了一个AJAX有趣的问题的例子：将数据从服务器推送到客户端。由于HTTP是请求 - 响应协议，因此聊天服务器无法将新消息推送到客户端。相反，客户端必须每隔几秒轮询服务器，看看是否有任何新消息到达。</p>
+<p>长时间轮询是减少这些类型场景中服务器负载的有趣技术。如果服务器在轮询时没有任何新消息，则根本不会发回响应。而且，如果在超时期限内收到了一个此客户端的消息，服务器将发现未完成的请求并返回消息。</p>
+<p>结论</p>
+<p>希望这可以让您更好地了解不同网页如何协同工作。</p>
+<h1 id="更详细的答案"><a href="#更详细的答案" class="headerlink" title="更详细的答案"></a>更详细的答案</h1><p><img src="http://i.imgur.com/h6L7GDe.png" alt=""></p>
+<p>github地址：<a href="https://github.com/skyline75489/what-happens-when-zh_CN/blob/master/README.rst" target="_blank" rel="external">https://github.com/skyline75489/what-happens-when-zh_CN/blob/master/README.rst</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay-reward-image.jpg" alt="牛少鹏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/23/python基础/" rel="next" title="python基础">
+                <i class="fa fa-chevron-left"></i> python基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/15/Django-Cookie与Session/" rel="prev" title="Django Cookie与Session">
+                Django Cookie与Session <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="牛少鹏" />
+          <p class="site-author-name" itemprop="name">牛少鹏</p>
+           
+              <p class="site-description motion-element" itemprop="description">跑啊跑，只是为了追上那个被寄予厚望的自己</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/54niu/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1939891387/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/you-qi-bing-86" target="_blank" title="zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://example.com/" title="百度" target="_blank">百度</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2-浏览器查询域名的IP地址"><span class="nav-number">1.</span> <span class="nav-text">2.浏览器查询域名的IP地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-浏览器向Web服务器发送HTTP请求"><span class="nav-number">2.</span> <span class="nav-text">3.浏览器向Web服务器发送HTTP请求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Facebook服务器以永久重定向方式进行响应"><span class="nav-number">3.</span> <span class="nav-text">4.Facebook服务器以永久重定向方式进行响应</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-浏览器遵循重定向"><span class="nav-number">4.</span> <span class="nav-text">5.浏览器遵循重定向</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-服务器’处理’请求"><span class="nav-number">5.</span> <span class="nav-text">6.服务器’处理’请求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-服务器发回一个HTML响应"><span class="nav-number">6.</span> <span class="nav-text">7.服务器发回一个HTML响应</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-浏览器开始渲染HTML"><span class="nav-number">7.</span> <span class="nav-text">8.浏览器开始渲染HTML</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-浏览器发送嵌入HTML的对象的请求"><span class="nav-number">8.</span> <span class="nav-text">9.浏览器发送嵌入HTML的对象的请求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-浏览器发送进一步的异步（AJAX）请求"><span class="nav-number">9.</span> <span class="nav-text">10.浏览器发送进一步的异步（AJAX）请求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更详细的答案"><span class="nav-number">10.</span> <span class="nav-text">更详细的答案</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">牛少鹏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1512d6b1286b4d16af0596fc3258e79a",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

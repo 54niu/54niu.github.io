@@ -1,0 +1,1046 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="总结了一下常见集中排序的算法,并用python实现">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python 实现各种排序算法">
+<meta property="og:url" content="http://yoursite.com/2017/04/15/python-实现各种排序算法/index.html">
+<meta property="og:site_name" content="鸣镝">
+<meta property="og:description" content="总结了一下常见集中排序的算法,并用python实现">
+<meta property="og:image" content="http://i.imgur.com/ExjIicA.png">
+<meta property="og:updated_time" content="2017-04-15T08:42:14.133Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python 实现各种排序算法">
+<meta name="twitter:description" content="总结了一下常见集中排序的算法,并用python实现">
+<meta name="twitter:image" content="http://i.imgur.com/ExjIicA.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/15/python-实现各种排序算法/"/>
+
+
+
+
+
+  <title> python 实现各种排序算法 | 鸣镝 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?94632125d893b6d9e661c730f5891f7a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">鸣镝</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/15/python-实现各种排序算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="牛少鹏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鸣镝">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                python 实现各种排序算法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-15T10:25:57+08:00">
+                2017-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/15/python-实现各种排序算法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>总结了一下常见集中排序的算法,并用python实现<br><img src="http://i.imgur.com/ExjIicA.png" alt=""><br><a id="more"></a></p>
+<h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><p>归并排序也称合并排序，是分治法的典型应用。分治思想是将每个问题分解成个个小问题，将每个小问题解决，然后合并。</p>
+<p>具体的归并排序就是，将一组无序数按n/2递归分解成只有一个元素的子项，一个元素就是已经排好序的了。然后将这些有序的子元素进行合并。</p>
+<p>合并的过程就是 对 两个已经排好序的子序列，先选取两个子序列中最小的元素进行比较，选取两个元素中最小的那个子序列并将其从子序列中</p>
+<p>去掉添加到最终的结果集中，直到两个子序列归并完成。</p>
+<p>代码如下：</p>
+<pre>
+
+import sys    
+def merge(nums, first, middle, last):  
+     '''merge  
+     切片边界,左闭右开并且是了0为开始 ''' 
+    lnums = nums[first:middle+1]   
+    rnums = nums[middle+1:last+1]  
+    lnums.append(sys.maxint)  
+    rnums.append(sys.maxint)  
+    l = 0  
+    r = 0  
+    for i in range(first, last+1):  
+        if lnums[l] < rnums[r]:  
+            nums[i] = lnums[l]  
+            l+=1  
+        else:  
+            nums[i] = rnums[r]  
+            r+=1  
+def merge_sort(nums, first, last):  
+    ''''' merge sort 
+    merge_sort函数中传递的是下标，不是元素个数 
+    '''  
+    if first < last:  
+        middle = (first + last)/2  
+        merge_sort(nums, first, middle)  
+        merge_sort(nums, middle+1, last)  
+        merge(nums, first, middle,last)  
+
+if __name__ == '__main__':  
+    nums = [10,8,4,-1,2,6,7,3]  
+    print 'nums is:', nums  
+    merge_sort(nums, 0, 7)  
+    print 'merge sort:', nums
+</pre>
+
+<p>稳定，时间复杂度 O(nlog n)</p>
+<h1 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h1><p>代码如下：</p>
+<p><pre><br>import sys<br>def insert_sort(a):<br>    ‘’’’’ 插入排序<br>    有一个已经有序的数据序列，要求在这个已经排好的数据序列中插入一个数，<br>    但要求插入后此数据序列仍然有序。刚开始 一个元素显然有序，然后插入一<br>    个元素到适当位置，然后再插入第三个元素，依次类推<br>    ‘’’<br>    a_len = len(a)<br>    if a_len = 0 and a[j] &gt; key:<br>            a[j+1] = a[j]<br>            j-=1<br>        a[j+1] = key<br>    return a<br>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    nums = [10,8,4,-1,2,6,7,3]<br>    print ‘nums is:’, nums<br>    insert_sort(nums)<br>    print ‘insert sort:’, nums<br></pre><br>稳定，时间复杂度 O(n^2)</p>
+<p>交换两个元素的值python中你可以这么写：a, b = b, a，其实这是因为赋值符号的左右两边都是元组</p>
+<p>（这里需要强调的是，在python中，元组其实是由逗号“,”来界定的，而不是括号）。</p>
+<h1 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h1><p>选择排序(Selection sort)是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小（大）元素，存放到</p>
+<p>排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所</p>
+<p>有元素均排序完毕。</p>
+<p><pre><br>import sys<br>def select_sort(a):<br>    ‘’’’’ 选择排序<br>    每一趟从待排序的数据元素中选出最小（或最大）的一个元素，<br>    顺序放在已排好序的数列的最后，直到全部待排序的数据元素排完。<br>    选择排序是不稳定的排序方法。<br>    ‘’’<br>    a_len=len(a)<br>    for i in range(a_len):#在0-n-1上依次选择相应大小的元素<br>        min_index = i#记录最小元素的下标<br>        for j in range(i+1, a_len):#查找最小值<br>            if(a[j]&lt;a[min_index]):<br>                min_index=j<br>        if min_index != i:#找到最小元素进行交换<br>            a[i],a[min_index] = a[min_index],a[i]  </pre></p>
+<p>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    A = [10, -3, 5, 7, 1, 3, 7]<br>    print ‘Before sort:’,A<br>    select_sort(A)<br>    print ‘After sort:’,A<br><br>不稳定，时间复杂度 O(n^2)</p>
+<h1 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h1><p>希尔排序，也称递减增量排序算法,希尔排序是非稳定排序算法。该方法又称缩小增量排序，因DL．Shell于1959年提出而得名。</p>
+<p>先取一个小于n的整数d1作为第一个增量，把文件的全部记录分成d1个组。所有距离为d1的倍数的记录放在同一个组中。先在各组内进行排序；</p>
+<p>然后，取第二个增量d2&lt;d1重复上述的分组和排序，直至所取的增量dt=1(dt&lt;dt-l&lt;…&lt;d2&lt;d1)，即所有记录放在同一组中进行直接插入排序为止。</p>
+<p><pre><br>import sys<br>def shell_sort(a):<br>    ‘’’’’ shell排序<br>    ‘’’<br>    a_len=len(a)<br>    gap=a_len/2#增量<br>    while gap&gt;0:<br>        for i in range(a_len):#对同一个组进行选择排序<br>            m=i<br>            j=i+1<br>            while j&lt;a_len:<br>                if a[j]&lt;a[m]:<br>                    m=j<br>                j+=gap#j增加gap<br>            if m!=i:<br>                a[m],a[i]=a[i],a[m]<br>        gap/=2  </pre></p>
+<p>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    A = [10, -3, 5, 7, 1, 3, 7]<br>    print ‘Before sort:’,A<br>    shell_sort(A)<br>    print ‘After sort:’,A<br><br>不稳定，时间复杂度 平均时间 O(nlogn) 最差时间O(n^s)1&lt;s&lt;2</p>
+<h1 id="堆排序-Heap-Sort"><a href="#堆排序-Heap-Sort" class="headerlink" title="堆排序 ( Heap Sort )"></a>堆排序 ( Heap Sort )</h1><p>“堆”的定义：在起始索引为 0 的“堆”中：</p>
+<p>节点 i 的右子节点在位置 2 * i + 24) 节点 i 的父节点在位置 floor( (i - 1) / 2 )   : 注 floor 表示“取整”操作</p>
+<p> 堆的特性：</p>
+<p> 每个节点的键值一定总是大于（或小于）它的父节点</p>
+<p>“最大堆”：</p>
+<p>“堆”的根节点保存的是键值最大的节点。即“堆”中每个节点的键值都总是大于它的子节点。</p>
+<p> 上移，下移 ：</p>
+<p>当某节点的键值大于它的父节点时，这时我们就要进行“上移”操作，即我们把该节点移动到它的父节点的位置，</p>
+<p>而让它的父节点到它的位置上，然后我们继续判断该节点，直到该节点不再大于它的父节点为止才停止“上移”。</p>
+<p>现在我们再来了解一下“下移”操作。当我们把某节点的键值改小了之后，我们就要对其进行“下移”操作。</p>
+<p>方法：</p>
+<p>我们首先建立一个最大堆(时间复杂度O(n))，然后每次我们只需要把根节点与最后一个位置的节点交换，然后把最后一个位置排除之外，然后把交换后根节点的堆进行调整(时间复杂度 O(lgn) )，即对根节点进行“下移”操作即可。 堆排序的总的时间复杂度为O(nlgn).</p>
+<p>代码如下：</p>
+<pre>
+
+<p>‘’’数组编号从 0开始  ‘’’<br>def left(i):<br>    return 2<em>i +1<br>def right(i):<br>    return 2</em>i+2  </p>
+<p>‘’’保持最大堆性质 使以i为根的子树成为最大堆’’’<br>def max_heapify(A, i, heap_size):<br>    if heap_size &lt;= 0:<br>        return<br>    l = left(i)<br>    r = right(i)<br>    largest = i # 选出子节点中较大的节点<br>    if l  A[largest]:<br>        largest = l<br>    if r  A[largest]:<br>        largest = r<br>    if i != largest :#说明当前节点不是最大的，下移<br>        A[i], A[largest] = A[largest], A[i] #交换<br>        max_heapify(A, largest, heap_size)#继续追踪下移的点<br>    ‘’’print A ‘’’<br>‘’’ 建堆 ‘’’<br>def bulid_max_heap(A):<br>    heap_size = len(A)<br>    if heap_size &gt;1:<br>        node = heap_size/2 -1<br>        while node &gt;= 0:<br>           max_heapify(A, node, heap_size)<br>           node -=1  </p>
+<p>‘’’堆排序 下标从0开始 ‘’’<br>def heap_sort(A):<br>    bulid_max_heap(A)<br>    heap_size = len(A)<br>    i = heap_size - 1<br>    while i &gt; 0 :<br>        A[0],A[i] = A[i], A[0] # 堆中的最大值存入数组适当的位置，并且进行交换<br>        heap_size -=1 # heap 大小 递减 1<br>        i -= 1 # 存放堆中最大值的下标递减 1<br>        max_heapify(A, 0, heap_size)<br>if <strong>name</strong> == ‘<strong>main</strong>‘ :<br>    A = [10, -3, 5, 7, 1, 3, 7]<br>    print ‘Before sort:’,A<br>    heap_sort(A)<br>    print ‘After sort:’,A<br></p></pre><br>不稳定，时间复杂度 O(nlog n)<p></p>
+<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><p>快速排序算法和合并排序算法一样，也是基于分治模式。对子数组A[p…r]快速排序的分治过程的三个步骤为：</p>
+<p>分解：把数组A[p…r]分为A[p…q-1]与A[q+1…r]两部分，其中A[p…q-1]中的每个元素都小于等于A[q]而A[q+1…r]中的每个元素都大于等于A[q]；</p>
+<p>解决：通过递归调用快速排序，对子数组A[p…q-1]和A[q+1…r]进行排序；</p>
+<p>合并：因为两个子数组是就地排序的，所以不需要额外的操作。</p>
+<p>对于划分partition 每一轮迭代的开始，x=A[r], 对于任何数组下标k，有：</p>
+<p>1) 如果p≤k≤i，则A[k]≤x。</p>
+<p>2) 如果i+1≤k≤j-1，则A[k]&gt;x。</p>
+<p>3) 如果k=r，则A[k]=x。</p>
+<p>代码如下： </p>
+<p><pre><br>‘’’快速排序 ‘’’<br>‘’’’<br>划分 使满足 以A[r]为基准对数组进行一个划分，比A[r]小的放在左边，<br>   比A[r]大的放在右边<br>快速排序的分治partition过程有两种方法，<br>一种是上面所述的两个指针索引一前一后逐步向后扫描的方法,<br>另一种方法是两个指针从首位向中间扫描的方法。<br>‘’’<br>‘’’p,r 是数组A的下标 ‘’’<br>def partition1(A, p ,r):<br>    ‘’’<br>      方法一，两个指针索引一前一后逐步向后扫描的方法<br>    ‘’’<br>    x = A[r]<br>    i = p-1<br>    j = p<br>    while j &lt; r:<br>        if A[j] &lt; x:<br>            i +=1<br>            A[i], A[j] = A[j], A[i]<br>        j += 1<br>    A[i+1], A[r] = A[r], A[i+1]<br>    return i+1  </pre></p>
+<p>def partition2(A, p, r):<br>    ‘’’<br>    两个指针从首尾向中间扫描的方法<br>    ‘’’<br>    i = p<br>    j = r<br>    x = A[p]<br>    while i = x and i &lt; j:<br>            j -=1<br>        A[i] = A[j]<br>        while A[i]&lt;=x and i &lt; j:<br>            i +=1<br>        A[j] = A[i]<br>    A[i] = x<br>    return i  </p>
+<p>‘’’quick sort  ‘’’</p>
+<p>def quick_sort(A, p, r):<br>    ‘’’<br>        快速排序的最差时间复杂度为O(n2)，平时时间复杂度为O(nlgn)<br>    ‘’’<br>    if p &lt; r:<br>        q = partition2(A, p, r)<br>        quick_sort(A, p, q-1)<br>        quick_sort(A, q+1, r)<br>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    A = [5,-4,6,3,7,11,1,2]<br>    print ‘Before sort:’,A<br>    quick_sort(A, 0, 7)<br>    print ‘After sort:’,A<br><br>不稳定，时间复杂度 最理想 O(nlogn)最差时间O(n^2)</p>
+<p>说下python中的序列：</p>
+<p>列表、元组和字符串都是序列，但是序列是什么，它们为什么如此特别呢？序列的两个主要特点是索引操作符和切片操作符。索引操作符让我们可以从序列中抓取一个特定项目。切片操作符让我们能够获取序列的一个切片，即一部分序列,如：a = [‘aa’,’bb’,’cc’], print a[0] 为索引操作，print a[0:2]为切片操作。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay-reward-image.jpg" alt="牛少鹏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/15/“python垃圾回收/" rel="next" title="“python垃圾回收">
+                <i class="fa fa-chevron-left"></i> “python垃圾回收
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/14/AWS-ec2配置ShadowSocks/" rel="prev" title="AWS ec2配置ShadowSocks">
+                AWS ec2配置ShadowSocks <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="牛少鹏" />
+          <p class="site-author-name" itemprop="name">牛少鹏</p>
+           
+              <p class="site-description motion-element" itemprop="description">跑啊跑，只是为了追上那个被寄予厚望的自己</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/54niu/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1939891387/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/you-qi-bing-86" target="_blank" title="zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://example.com/" title="百度" target="_blank">百度</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#归并排序"><span class="nav-number">1.</span> <span class="nav-text">归并排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插入排序"><span class="nav-number">2.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择排序"><span class="nav-number">3.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#希尔排序"><span class="nav-number">4.</span> <span class="nav-text">希尔排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#堆排序-Heap-Sort"><span class="nav-number">5.</span> <span class="nav-text">堆排序 ( Heap Sort )</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#快速排序"><span class="nav-number">6.</span> <span class="nav-text">快速排序</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">牛少鹏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1512d6b1286b4d16af0596fc3258e79a",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
