@@ -3,6 +3,13 @@
   
     
     <entry>
+      <title><![CDATA[django留言板]]></title>
+      <url>%2F2017%2F05%2F22%2Fdjango%E7%95%99%E8%A8%80%E6%9D%BF%2F</url>
+      <content type="text"><![CDATA[本文使用django实现一个留言板功能，代码环境为： windows10 python3.5 django1.10 开发工具： pycharm 很稀奇，这篇博文 hexo g时一直出错，所以就截成了一张长图]]></content>
+    </entry>
+
+    
+    <entry>
       <title><![CDATA[django学习笔记一]]></title>
       <url>%2F2017%2F05%2F04%2Fdjango%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80%2F</url>
       <content type="text"><![CDATA[python简介Django是一个开源的python web框架。采用MVC框架，即模型M(Model),视图V(View),控制器C(Controller)。它最初是被开发来用于管理劳伦斯出版集团旗下的一些以新闻内容为主的网站的，即是CMS（内容管理系统）软件。并于2005年7月在BSD许可证下发布。这套框架是以比利时的吉普赛爵士吉他手Django Reinhardt来命名的。(Django的音乐真不错)。 架构设计Django是一个基于MVC构造的框架。但是在Django中，控制器接受用户输入的部分由框架自行处理，所以 Django 里更关注的是模型（Model）、模板(Template)和视图（Views），称为 MTV模式。它们各自的职责如下： 层次 职责 模型（Model），即数据存取层 处理与数据相关的所有事务： 如何存取、如何验证有效性、包含哪些行为以及数据之间的关系等。 视图（View），即表现层 处理与表现相关的决定： 如何在页面或其他类型文档中进行显示。 模板(Template)，即业务逻辑层 存取模型及调取恰当模板的相关逻辑。模型与模板的桥梁。 从以上表述可以看出Django 视图不处理用户输入，而仅仅决定要展现哪些数据给用户，而Django 模板 仅仅决定如何展现Django视图指定的数据。或者说, Django将MVC中的视图进一步分解为 Django视图 和 Django模板两个部分，分别决定 “展现哪些数据” 和 “如何展现”，使得Django的模板可以根据需要随时替换，而不仅仅限制于内置的模板。 至于MVC控制器部分，由Django框架的URLconf来实现。URLconf机制是使用正则表达式匹配URL，然后调用合适的Python函数。URLconf对于URL的规则没有任何限制，你完全可以设计成任意的URL风格，不管是传统的，RESTful的，或者是另类的。框架把控制层给封装了，无非与数据交互这层都是数据库表的读,写,删除,更新的操作.在写程序的时候，只要调用相应的方法就行了，感觉很方便。程序员把控制层东西交给Django自动完成了。 只需要编写非常少的代码完成很多的事情。所以，它比MVC框架考虑的问题要深一步，因为我们程序员大都在写控制层的程序。现在这个工作交给了框架，仅需写很少的调用代码，大大提高了工作效率。 设计哲学Django的主要目的是简便、快速的开发数据库驱动的网站。它强调代码复用,多个组件可以很方便的以“插件”形式服务于整个框架，Django有许多功能强大的第三方插件，你甚至可以很方便的开发出自己的工具包。这使得Django具有很强的可扩展性。它还强调快速开发和DRY(Do Not Repeat Yourself)原则。 Django基于MVC的设计十分优美： 对象关系映射 (ORM,object-relational mapping)：以Python类形式定义你的数据模型，ORM将模型与关系数据库连接起来，你将得到一个非常容易使用的数据库API，同时你也可以在Django中使用原始的SQL语句。 URL 分派：使用正则表达式匹配URL，你可以设计任意的URL，没有框架的特定限定。像你喜欢的一样灵活。 模版系统：使用Django强大而可扩展的模板语言，可以分隔设计、内容和Python代码。并且具有可继承性。 表单处理：你可以方便的生成各种表单模型，实现表单的有效性检验。可以方便的从你定义的模型实例生成相应的表单。 Cache系统：可以挂在内存缓冲或其它的框架实现超级缓冲 －－ 实现你所需要的粒度。 会话(session)，用户登录与权限检查，快速开发用户会话功能。 国际化：内置国际化系统，方便开发出多种语言的网站。 自动化的管理界面：不需要你花大量的工作来创建人员管理和更新内容。Django自带一个ADMIN site,类似于内容管理系统。 工作机制 用manage.py runserver启动Django服务器时就载入了在同一目录下的settings .py。该文件包含了项目中的配置信息，如前面讲的URLConf等，其中最重要的配置就是ROOT_URLCONF，它告诉Django哪个Python模块应该用作本站的URLConf，默认的是urls .py。 当访问url时Django会根据ROOT_URLCONF的设置来装载URLConf。 然后按顺序逐个匹配URLConf里的URLpatterns。如果找到则会调用相关联的视图函数，并把HttpRequest对象作为第一个参数(通常是request) 最后该view函数负责返回一个HttpResponse对象。 文档官方展示：http://www.djangosites.org/Github： https://github.com/django/django中文文档：http://www.kancloud.cn/wizardforcel/django-chinese-docs-18/98846Djangogirl： Github：https://github.com/DjangoGirls/djangogirls 文档： https://tutorial.djangogirls.org/zh/installation/]]></content>
